@@ -2,16 +2,21 @@
 //Datos para simular prestamo
 const monto = document.querySelector("#monto")
 const btncalcular = document.querySelector("#btncalcular")
-
 const listadodetareas = document.querySelector("#infoguardada")
-
+const listadodetareasdatos= document.querySelector("#datosGuardados")
 const db = window.localStorage
-
 const botonDeconfirmacion = document.querySelector(".iconocheck")
 
-
-
 btncalcular.onclick = () => {
+    // VALIDACIÓN: Verifica que todos los campos estén llenos
+    if (monto.value.trim() <= 0) {
+        Swal.fire({
+          icon: "error",
+          title: "Te falto agregar el monto deseado",
+          text: "Por favor completá todos los campos antes de continuar.",
+        });
+        return; // No continúa con el guardado
+      }
     let prestamo = {
         id: Math.random(1,100),
         monto: monto.value,
@@ -28,6 +33,7 @@ btncalcular.onclick = () => {
 }
 
 cargarPrestamo (db, listadodetareas)
+
 
 
 

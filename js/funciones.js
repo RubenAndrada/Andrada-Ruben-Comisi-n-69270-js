@@ -12,154 +12,112 @@ const cargarPrestamo = (db, parentNode) =>{
     }
 }
 
-function calcularCuotas(parentNode, prestamo, db){
+const datosGuardada = localStorage.getItem("datos");
+if(datosGuardada){
+    const datosGuardados = JSON.parse(datosGuardada);
+    document.getElementById("datosGuardados").innerHTML = `
+    <p>Nombre: ${datosGuardados.nombre}</p>
+    <p>Apellido: ${datosGuardados.apellido}</p>
+    <p>Dni: ${datosGuardados.dni}</p>
+    <p>Email: ${datosGuardados.email}</p>
+    <p>Telefono: ${datosGuardados.telefono}</p>
+  `;
+    
+}
 
-    if(prestamo.cuota1==true ){ 
-        
-        dineroaprestar = prestamo.monto
 
-        interesdecuotas = Number(0.102662)
-        cantidaddecuotas= Number(1)
-        crearPrestamo (parentNode, prestamo,db)
-            
-    }
-    else if(prestamo.cuota3==true){
-        dineroaprestar = prestamo.monto
-        interesdecuotas = Number(1.10094558)
-        cantidaddecuotas= Number(3)
-        crearPrestamo (parentNode, prestamo,db)
-            
-    }
-    else if(prestamo.cuota6==true){
-        dineroaprestar = prestamo.monto
-        interesdecuotas = Number(1.21830696)
-        cantidaddecuotas= Number(6)
-        crearPrestamo (parentNode, prestamo,db)
-        
-            
-    }
-    else if(prestamo.cuota9==true){
-        dineroaprestar = prestamo.monto
-        interesdecuotas = Number(1.34335854)
-        cantidaddecuotas= Number(9)
-        crearPrestamo (parentNode, prestamo,db)
-        
-            
-    }
-    else if(prestamo.cuota12==true){
-        dineroaprestar = prestamo.monto
-        interesdecuotas = Number(1.4755548)
-        cantidaddecuotas= Number(12)
-        crearPrestamo (parentNode, prestamo,db)
-        
-            
-    }
-        
+async function calcularCuotas(parentNode, prestamo, db){
+    try{
+        const cuotasConfig = {
+            cuota1: { multiplicador: 1.102662, cuotas: 1 },
+            cuota3: { multiplicador: 1.10094558, cuotas: 3 },
+            cuota6: { multiplicador: 1.21830696, cuotas: 6 },
+            cuota9: { multiplicador: 1.34335854, cuotas: 9 },
+            cuota12: { multiplicador: 1.4755548, cuotas: 12 }
+          };
+
+          for (let cuota in cuotasConfig) {
+            if (prestamo[cuota]) {
+              dineroaprestar = prestamo.monto;
+              interesdecuotas = cuotasConfig[cuota].multiplicador;
+              cantidaddecuotas = cuotasConfig[cuota].cuotas;
+              crearPrestamo(parentNode, prestamo, db);
+              break;
+            }
+        }
+          
+          
+    }  
+    catch (error){
+        console.log(error)
+
+    }  
     
 }
 
 
 
-const crearPrestamo = (parentNode, prestamo,db) =>{
-
-    let dineroapagar = Number(((dineroaprestar*interesdecuotas)/cantidaddecuotas).toFixed(2))
-    let dineroadevolver = Number((dineroaprestar*interesdecuotas).toFixed(2))
-
-    let divPrestamo = document.createElement(`div`)
-    let cuotasPrestamo = document.createElement(`p`)
-    let interesPrestamo = document.createElement(`p`)
-        
-    let totalADevolverPrestamo = document.createElement(`p`)
-    let iconoAceptar= document.createElement(`span`)
-    let iconoBorrar= document.createElement(`span`)
-    
-    interesPrestamo.innerHTML = dineroapagar
-    cuotasPrestamo.innerHTML = cantidaddecuotas
-    totalADevolverPrestamo.innerHTML= dineroadevolver
-    iconoAceptar.innerHTML= "Aceptar prestamo"
-    iconoBorrar.innerHTML= `delete_forever`
-    
-    divPrestamo.classList.add(`tarea`)
-    iconoAceptar.classList.add(`iconocheck`)
-
-    iconoBorrar.classList.add(`material-symbols-outlined`, `icono`)
-
-    iconoAceptar.addEventListener("click", () =>{
-        prestamo
-        location.href= 'formconfirm.html'
-    })
-    
-    iconoBorrar.onclick = () =>{
-        db.removeItem(prestamo.id)
-        window.location.reload(true)
-    }
-    
-    divPrestamo.appendChild(cuotasPrestamo)
-    divPrestamo.appendChild(interesPrestamo)
-    divPrestamo.appendChild(totalADevolverPrestamo)
-    divPrestamo.appendChild(iconoAceptar)
-    divPrestamo.appendChild(iconoBorrar)
-    
-    parentNode.appendChild(divPrestamo)
-
-    crearDatos  (parentNode, datos, prestamo, db)
-    
-    
-    }
-
-
-
-const guardarDatos = (db, datos) =>{
-    db.setItem(datos.ip, JSON.stringify(datos))
-    window.location.reload(true)
-        
-}
-
-const cargarDatos = (db, parentNode) =>{
-    let claves2 = Object.keys(db)
-    for(clave1 of claves2 ){
-        let datos = JSON.parse(db.getItem(clave1))
-        crearDatos (parentNode, datos, db)
-    }
-}
-
-
-const crearDatos = (parentNode, datos, db)=>{
-    let divDatos = document.createElement(`div`)
-    let nombreDatos = document.createElement(`p`)
-    let apellidoDatos = document.createElement(`p`)
-    let dniDatos = document.createElement(`p`)
-    let emailDatos = document.createElement(`p`)
-    let telefonoDatos = document.createElement(`p`)
-    let iconoBorrar= document.createElement(`span`)
-    
-    
-    nombreDatos.innerHTML = datos.nombre
-    apellidoDatos.innerHTML = datos.apellido
-    dniDatos.innerHTML= datos.dni 
-    emailDatos.innerHTML= datos.email
-    telefonoDatos.innerHTML= datos.telefono
-    iconoBorrar.innerHTML= `delete_forever`
-
-
-    divDatos.classList.add(`tarea`)
-    
-    iconoBorrar.classList.add(`material-symbols-outlined`, `icono`)
-    
-    iconoBorrar.onclick = () =>{
-        db.removeItem(datos.ip)
-        window.location.reload(true)
-    }
-    
-    divDatos.appendChild(nombreDatos)
-    divDatos.appendChild(apellidoDatos)
-    divDatos.appendChild(dniDatos)
-   
-    divDatos.appendChild(emailDatos)
-    divDatos.appendChild(telefonoDatos)
-    divDatos.appendChild(iconoBorrar)
-    
-    parentNode.appendChild(divDatos)
-
-    
-}
+const crearPrestamo = (parentNode, prestamo, db) => {
+    const dineroapagar = Number(((dineroaprestar * interesdecuotas) / cantidaddecuotas).toFixed(2));
+    const dineroadevolver = Number((dineroaprestar * interesdecuotas).toFixed(2));
+  
+    const crearParrafo = (texto) => {
+      const p = document.createElement("p");
+      p.innerHTML = texto;
+      return p;
+    };
+  
+    const divPrestamo = document.createElement("div");
+    divPrestamo.classList.add("tarea");
+  
+    const iconoAceptar = document.createElement("span");
+    iconoAceptar.innerHTML = "Aceptar prestamo";
+    iconoAceptar.classList.add("iconocheck");
+  
+    const iconoBorrar = document.createElement("span");
+    iconoBorrar.innerHTML = "delete_forever";
+    iconoBorrar.classList.add("material-symbols-outlined", "icono");
+  
+    iconoAceptar.addEventListener("click", () => {
+      Swal.fire({
+        title: "Aceptar préstamo",
+        text: "¿Estás seguro que quieres aceptar el préstamo?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Confirmar!",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          Swal.fire({
+            position: "center",
+            icon: "success",
+            title: "¡Préstamo aprobado, vuelva pronto!",
+            showConfirmButton: false,
+            timer: 3000,
+          });
+          setTimeout(() => {
+            localStorage.clear();
+            location.href = "index.html";
+          }, 3500);
+        }
+      });
+    });
+  
+    iconoBorrar.onclick = () => {
+      db.removeItem(prestamo.id);
+      window.location.reload(true);
+    };
+  
+    // Añadir todos los elementos al div
+    divPrestamo.append(
+      crearParrafo(`Dinero solicitado: $${dineroaprestar}`),
+      crearParrafo(`Cantidad de cuotas: ${cantidaddecuotas}`),
+      crearParrafo(`Pago mensual: $${dineroapagar}`),
+      crearParrafo(`Total a devolver: $${dineroadevolver}`),
+      iconoAceptar,
+      iconoBorrar
+    );
+  
+    parentNode.appendChild(divPrestamo);
+  };

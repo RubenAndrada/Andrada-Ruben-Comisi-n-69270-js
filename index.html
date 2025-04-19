@@ -7,8 +7,7 @@
     <link rel="stylesheet" href="./css/estilo.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=delete_forever" />
-    <script defer  src="./js/funciones.js"></script>
-    <script defer  src="./js/primerapreentrega.js"></script>
+    <script defer  src="./js/formularioDeConfirmacion.js"></script>
 </head>
 <body>
     <header class="barra">
@@ -29,64 +28,52 @@
     </header>
 
    
-    
-  
-   <section class="simuladordeprestamo">
-        <div class="col-6">
-            <h2>Prestamos personales</h2>
+    <section id="pedirdatos">
+        <form class="col-6">
+            <h2>Datos personales</h2>
             <div class="form-group">
-                <label for="monto">Monto</label>
-                <input type="number" class="form-control" id="monto" placeholder="Ingresar monto" min="150" max="1700000">
+                <label >Nombre Completo</label>
+                <input type="text" class="form-control" name="nombre" id="nombre" placeholder="Ingresar Nombre" >
             </div>
-            <div class="form-check">
-                <input class="form-check-input" type="radio" name="flexRadioDefault" id="cuota1" value="1" >
-                <label class="form-check-label" for="flexRadioDefault1">
-                1 Cuota
+            <div class="form-group">
+                <label  >
+                    Apellido
                 </label>
+                <input class="form-control" type="text" name="apellido" id="apellido"   placeholder="Ingresar Apellido">
+                
             </div>
-            <div class="form-check">
-                <input class="form-check-input" type="radio" name="flexRadioDefault" id="cuota3" value="3" checked>
-                <label class="form-check-label" for="flexRadioDefault2">
-                3 Cuotas
+            <div class="form-group">
+                <label >
+                    Dni
                 </label>
+                <input class="form-control" type="number" name="dni" id="dni" placeholder="Ingresar Dni">
+                
             </div>
-            <div class="form-check">
-                <input class="form-check-input" type="radio" name="flexRadioDefault" id="cuota6" value="6">
-                <label class="form-check-label" for="flexRadioDefault1">
-                6 Cuotas
+
+            <div class="form-email">
+                <label >
+                    Email
                 </label>
+                <input class="form-control" type="email" name="email" id="email"  placeholder="Ingresar Email">
+                
             </div>
-            <div class="form-check">
-                <input class="form-check-input" type="radio" name="flexRadioDefault" id="cuota9" value="9">
-                <label class="form-check-label" for="flexRadioDefault2">
-                9 Cuotas
+            <div class="form-number">
+                <label >
+                    Telefono
                 </label>
-            </div>
-            <div class="form-check">
-                <input class="form-check-input" type="radio" name="flexRadioDefault" id="cuota12" value="12" >
-                <label class="form-check-label" for="flexRadioDefault1">
-                12 Cuotas
-                </label>
+                <input class="form-control" type="number" name="telefono" id="telefono"  placeholder="Ingresar Telefono">
+                
             </div>
           
-            <button style="margin-top: 20px;" type="button" class="btn btn-primary" id="btncalcular">Calcular</button>
-        </div>
-    </section>
-    <section class="informacionGuardada" id="infoguardada">
-        <div class="tarea">
-            <p><b> Cantidad de cuotas</b></p>
-            <p><b> Dinero a pagar por mes</b> </p>
-            <p><b> Monto total a devolver</b></p>
-            <span class="iconocheck" >
-                Aceptar prestamo
-            <span class="material-symbols-outlined icono">
-                delete_forever
-            </span>
+            <button style="margin-top: 20px;" type="button" class="btn btn-primary" id="btnconfirmar">Confirmar</button>
+        </form>
 
-        </div>
-    </section>
 
-    
+    </section>
+  
+   
+    <!-- Etiquetas script -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
 </html>
